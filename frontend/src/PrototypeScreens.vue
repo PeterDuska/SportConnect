@@ -13,7 +13,7 @@ const managingMembers = ref(false)
 const sampleMemberVisible = ref(true)
 const adminDetail = ref(false)
 const attendance = ref('')
-const visibility = ref('Private')
+const visibility = ref('Public')
 const competitionName = ref('')
 const competition = ref('')
 const title = computed(() => ({ rules: 'How scoring works', event: 'Matchday', competitions: 'Competitions', 'group-settings': 'Group settings', admin: 'Administration' })[props.screen])
@@ -40,7 +40,7 @@ function createCompetition() { if (!competitionName.value.trim()) return; compet
       <div v-else class="extra-panel"><h2>{{ competition }}</h2><p>Preview competition</p><div class="info-row"><span>Matches</span><strong>Not set</strong></div><div class="info-row"><span>Leaderboard</span><strong>Not available</strong></div><button type="button" class="text-button" @click="section = 'overview'">All competitions</button></div>
     </template>
 
-    <template v-else-if="screen === 'group-settings'"><div class="extra-panel"><h2>Privacy</h2><div class="choice-row"><button v-for="option in ['Private', 'Public']" :key="option" type="button" :class="{ active: visibility === option }" :aria-pressed="visibility === option" @click="visibility = option">{{ option }}</button></div><p class="sample-note">Preview only. Privacy and membership changes are not saved.</p></div><div class="extra-panel"><div class="detail-section-heading"><h2>Manage members</h2><button type="button" class="text-button" @click="managingMembers = !managingMembers">{{ managingMembers ? 'Close' : 'Manage' }}</button></div><div v-if="managingMembers" class="manage-preview"><div v-if="sampleMemberVisible" class="info-row"><span>Sample member</span><button type="button" class="text-button" @click="sampleMemberVisible = false">Remove</button></div><p v-else class="sample-note">Sample member removed from this preview.</p><p class="sample-note">Preview only. No membership is changed.</p></div></div></template>
+    <template v-else-if="screen === 'group-settings'"><div class="extra-panel"><h2>Privacy</h2><div class="choice-row"><button v-for="option in ['Public', 'Private']" :key="option" type="button" :class="{ active: visibility === option }" :aria-pressed="visibility === option" @click="visibility = option">{{ option }}</button></div><p class="sample-note">Preview only. Privacy and membership changes are not saved.</p></div><div class="extra-panel"><div class="detail-section-heading"><h2>Manage members</h2><button type="button" class="text-button" @click="managingMembers = !managingMembers">{{ managingMembers ? 'Close' : 'Manage' }}</button></div><div v-if="managingMembers" class="manage-preview"><div v-if="sampleMemberVisible" class="info-row"><span>Sample member</span><button type="button" class="text-button" @click="sampleMemberVisible = false">Remove</button></div><p v-else class="sample-note">Sample member removed from this preview.</p><p class="sample-note">Preview only. No membership is changed.</p></div></div></template>
 
     <template v-else-if="screen === 'admin'">
       <p class="preview-banner">Design preview. Administration actions are not connected.</p>

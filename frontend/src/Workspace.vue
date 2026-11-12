@@ -298,12 +298,16 @@ async function createGroup() {
     <section v-else-if="selectedGroup" class="group-detail" aria-labelledby="group-title">
       <button type="button" class="detail-back" aria-label="Back to groups" @click="closeGroup"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m0 0 6-6m-6 6 6 6"/></svg></button>
       <div class="group-intro"><h1 id="group-title" ref="groupHeading" tabindex="-1">{{ selectedGroup.name }}</h1><p>{{ selectedGroup.sample ? 'Sample community' : 'Your preview community' }}</p></div>
-      <div class="group-actions"><button type="button" @click="extraScreen = 'competitions'">Competitions</button><button type="button" @click="extraScreen = 'group-settings'">Settings</button></div>
+      <!--
+      <button type="button" @click="extraScreen = 'competitions'">Competitions</button>
+      -->
+      <div class="group-actions"><button type="button" @click="extraScreen = 'group-settings'">Settings</button></div>
+        
       <div class="group-tabs" role="group" aria-label="Community sections"><button v-for="item in (['Members', 'Rankings', 'Bets'] as const)" :key="item" :aria-pressed="groupTab === item" :class="{ active: groupTab === item }" @click="groupTab = item; notice = ''">{{ item }}</button></div>
       <section v-if="groupTab === 'Members'" class="group-panel">
         <div class="detail-section-heading"><h2>Members</h2><button type="button" class="text-button" @click="inviteOpen = !inviteOpen" :aria-expanded="inviteOpen">{{ inviteOpen ? 'Close' : 'Invite friends' }}</button></div>
         <p v-if="notice" class="notice" role="status">{{ notice }}</p>
-        <form v-if="inviteOpen" class="invite-form" @submit.prevent="addPreviewMember"><label for="invite-name">Friend's name</label><div class="invite-row"><input id="invite-name" v-model="inviteName" maxlength="60" required placeholder="Enter a name"><button class="pick-button" :disabled="!inviteName.trim()">Add</button></div><p class="sample-note">Preview only. No invitation will be sent.</p></form>
+        <form v-if="inviteOpen" class="invite-form" @submit.prevent="addPreviewMember"><label for="invite-name">Friend's email</label><div class="invite-row"><input id="invite-name" v-model="inviteName" maxlength="60" required placeholder="Enter email"><button class="pick-button" :disabled="!inviteName.trim()">Add</button></div><p class="sample-note">Preview only. No invitation will be sent.</p></form>
         <ul class="member-list"><li><span class="friend-avatar">{{ name.trim().slice(0, 1).toUpperCase() }}</span><span>{{ name }} <small>You</small></span></li><li v-for="member in (sampleMembers[selectedGroup.id] ?? [])" :key="member"><span class="friend-avatar">{{ member.slice(0, 1) }}</span><span>{{ member }} <small>Sample</small></span></li><li v-for="(invited, index) in selectedGroup.invited" :key="index"><span class="friend-avatar">{{ invited.slice(0, 1).toUpperCase() }}</span><span>{{ invited }} <small>Preview only</small></span></li></ul>
         <p v-if="!selectedGroup.sample && !selectedGroup.invited.length" class="group-empty">Invite friends to start your community.</p>
       </section>
